@@ -23,24 +23,20 @@ def submit():
         photo_name = photo.filename
         photo.save(os.path.join(UPLOAD_FOLDER, photo_name))
 
-    # Save to responses.txt
     entry = f"Name: {name} | Message: {about} | Photo: {photo_name}\n"
     with open('responses.txt', 'a') as f:
         f.write(entry)
 
     return "<h1>Memory Saved! ❤️</h1><a href='/'>Go Back</a>"
 
-@app.route('/my-secret-admin-panel')
+@app.route('/view-memories-secret')
 def admin_view():
-    try:
-        if os.path.exists('responses.txt'):
-            with open('responses.txt', 'r') as f:
-                data = f.read()
-        else:
-            data = "No messages yet."
-        return f"<html><body><h1>Batch Messages</h1><pre>{data}</pre><br><a href='/'>Back</a></body></html>"
-    except Exception as e:
-        return str(e)
+    if os.path.exists('responses.txt'):
+        with open('responses.txt', 'r') as f:
+            data = f.read()
+    else:
+        data = "No messages yet."
+    return f"<html><body style='background:#1a001a;color:white;padding:20px;'><pre>{data}</pre></body></html>"
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
