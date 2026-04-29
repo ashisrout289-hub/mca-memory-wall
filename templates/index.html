@@ -5,64 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our MCA Journey</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="bg-animation-container"></div>
+    <div class="container">
+        <header>
+            <h1>Our MCA Life 2024-2026</h1>
+            <p>Final Batch Memories</p>
+        </header>
 
-    <audio id="bgMusic" loop>
-        <source src="{{ url_for('static', filename='background-track.mp3') }}" type="audio/mpeg">
-    </audio>
-
-    <header class="hero">
-        <h1>Our MCA Life: The Final Chapter</h1>
-    </header>
-
-    <main class="container">
+        <!-- Final Batch Picture Section -->
         <section class="card">
-            <h2>To My Friends</h2>
-            <p id="animated-message" class="loving-text"></p>
+            <h2>The Final Frame 🖼️</h2>
+            <img src="{{ url_for('static', filename='final pic.jpg') }}" alt="Final Batch" style="width: 100%; border-radius: 15px;">
         </section>
 
+        <!-- Video Gallery Section -->
         <section class="card">
-            <h2>Our Favorite Moment</h2>
-            <div class="img-container">
-                <img src="{{ url_for('static', filename='test-photo.jpg.PNG') }}" alt="MCA Memory">
+            <h2>Memories in Motion 🎥</h2>
+            
+            <div class="video-grid">
+                <p>Main Journey</p>
+                <video controls width="100%"><source src="{{ url_for('static', filename='journy video.mp4') }}" type="video/mp4"></video>
+                
+                <p>Memory Snippet 1</p>
+                <video controls width="100%"><source src="{{ url_for('static', filename='video 1.mp4') }}" type="video/mp4"></video>
+                
+                <p>Memory Snippet 2</p>
+                <video controls width="100%"><source src="{{ url_for('static', filename='video2.mp4') }}" type="video/mp4"></video>
+                
+                <p>Memory Snippet 3</p>
+                <video controls width="100%"><source src="{{ url_for('static', filename='video 3.mp4') }}" type="video/mp4"></video>
             </div>
         </section>
 
+        <!-- Form Section -->
         <section class="card">
-            <h2>Memories in Motion</h2>
-            <div class="video-container">
-                <video id="mainVideo" controls width="100%">
-                    <source src="{{ url_for('static', filename='journey-video.mp4') }}" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-        </section>
-
-        <section class="card">
-            <h2>Leave Your Mark</h2>
-            <form id="journeyForm" action="/submit" method="POST" enctype="multipart/form-data">
-                <div class="form-step active" id="step1">
-                    <p>What is your name?</p>
-                    <input type="text" name="name" placeholder="Your name..." required>
-                    <button type="button" onclick="nextStep(2)">Next ❤️</button>
-                </div>
-                <div class="form-step" id="step2" style="display:none;">
-                    <p>Your message:</p>
-                    <textarea name="about" placeholder="Write something sweet..." required></textarea>
-                    <button type="button" onclick="nextStep(3)">Next ✨</button>
-                </div>
-                <div id="step3" class="form-step" style="display:none;">
-                    <p>Upload a memory:</p>
-                    <input type="file" name="photo" accept="image/*" required>
-                    <button type="submit">Save Forever 💖</button>
-                </div>
+            <h2>Leave a Message</h2>
+            <form action="/submit" method="post" enctype="multipart/form-data">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <textarea name="about" placeholder="Write a memory..." required></textarea>
+                <label>Upload a Photo: </label>
+                <input type="file" name="photo">
+                <button type="submit">Post Memory ❤️</button>
             </form>
         </section>
-    </main>
-
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    </div>
 </body>
 </html>
