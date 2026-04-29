@@ -4,38 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCA Family | 2024-2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body { margin: 0; font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #1a0a2e 0%, #3d0a25 50%, #0a0a0a 100%); color: white; overflow-x: hidden; }
         .container { max-width: 900px; margin: auto; padding: 20px; }
         
         .hero h1 { font-size: 3.5rem; background: linear-gradient(to right, #ff758c, #ff7eb3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin-bottom: 5px; }
         
-        /* WORD-BY-WORD ANIMATION STYLING */
+        /* WORD-BY-WORD ANIMATION */
         .emotional-message { 
             background: rgba(255, 255, 255, 0.05); 
             border-left: 4px solid #ff758c; 
-            padding: 30px; 
-            margin: 30px 0; 
-            font-size: 1.2rem; 
-            line-height: 1.8; 
+            padding: 30px; margin: 30px 0; 
+            font-size: 1.2rem; line-height: 1.8; 
             border-radius: 0 20px 20px 0;
-            min-height: 300px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px; /* Space between words */
+            display: flex; flex-wrap: wrap; gap: 6px;
+            min-height: 250px;
         }
 
-        .word {
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .word.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .word { opacity: 0; transform: translateY(10px); transition: all 0.3s ease; display: inline-block; }
+        .word.visible { opacity: 1; transform: translateY(0); }
 
         .card { 
             background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); 
@@ -44,13 +32,12 @@
         }
 
         h2 { color: #ff7eb3; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        img, video { width: 100%; border-radius: 15px; border: 2px solid #ff758c; margin-top: 15px; }
+        img, video { width: 100%; border-radius: 15px; border: 2px solid #ff758c; margin-top: 15px; background: black; }
         
         input, textarea { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: none; background: rgba(0,0,0,0.4); color: white; box-sizing: border-box; }
-        
         button { background: linear-gradient(90deg, #ff758c, #ff7eb3); color: white; padding: 15px 30px; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.1rem; margin-top: 10px; }
         
-        .floating-heart { position: fixed; bottom: -50px; z-index: -1; animation: floatUp linear forwards; }
+        .floating-heart { position: fixed; bottom: -50px; z-index: -1; animation: floatUp linear forwards; pointer-events: none; }
         @keyframes floatUp {
             0% { transform: translateY(0) rotate(0deg); opacity: 0; }
             20% { opacity: 1; }
@@ -65,7 +52,6 @@
             <p style="text-align:center; letter-spacing: 2px;">2024 — 2026</p>
         </div>
 
-        <!-- THE WORD-BY-WORD CONTAINER -->
         <div class="emotional-message" id="word-container"></div>
 
         <div class="card">
@@ -75,28 +61,34 @@
 
         <div class="card">
             <h2>Memories in Motion 🎥</h2>
-            <video controls><source src="/static/journyvideo.mp4" type="video/mp4"></video>
-            <video controls><source src="/static/video1.mp4" type="video/mp4"></video>
-            <video controls><source src="/static/video2.mp4" type="video/mp4"></video>
-            <video controls><source src="/static/video3.mp4" type="video/mp4"></video>
+            <video controls preload="metadata"><source src="/static/journyvideo.mp4" type="video/mp4"></video>
+            <video controls preload="metadata"><source src="/static/video1.mp4" type="video/mp4"></video>
+            <video controls preload="metadata"><source src="/static/video2.mp4" type="video/mp4"></video>
+            <video controls preload="metadata"><source src="/static/video3.mp4" type="video/mp4"></video>
         </div>
 
-        <!-- STRICT UPLOAD SECTION -->
-        <div class="card">
+        <!-- UPLOAD SECTION WITH LOCK -->
+        <div class="card" id="upload-section">
             <h2>Upload Your Best Memory ❤️</h2>
-            <p style="color: #ff758c; font-size: 0.8rem;">* All fields are mandatory (Name, Message, and Photo)</p>
-            <form action="/submit" method="post" enctype="multipart/form-data">
-                <input type="text" name="name" placeholder="Your Name" required>
-                <textarea name="about" placeholder="Write your heartfelt message..." rows="5" required></textarea>
-                <p style="font-size: 0.9rem; margin-top: 10px;">Select your memory photo:</p>
-                <input type="file" name="photo" accept="image/*" required>
-                <button type="submit">Post to the Wall</button>
-            </form>
+            <div id="form-container">
+                <p style="color: #ff758c; font-size: 0.8rem;">* All fields are mandatory. You can only post once.</p>
+                <form id="memoryForm" action="/submit" method="post" enctype="multipart/form-data">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <textarea name="about" placeholder="Write your heartfelt message..." rows="5" required></textarea>
+                    <p style="font-size: 0.9rem; margin-top: 10px;">Select your memory photo:</p>
+                    <input type="file" name="photo" accept="image/*" required>
+                    <button type="submit">Post to the Wall</button>
+                </form>
+            </div>
+            <div id="already-posted" style="display:none; text-align:center; padding: 20px;">
+                <h3 style="color: #ff7eb3;">You've already shared your memory! ❤️</h3>
+                <p>Check the wall later to see everyone's messages.</p>
+            </div>
         </div>
     </div>
 
     <script>
-        const fullText = "It all started with awkward first meetings, unknown faces and names, but slowly those strangers became friends and then turned into family. From simple “hi” to calling each other bhai and yaar, we never realized when the bond became so strong. The endless masti, backchodi and laughter in classrooms made every day unforgettable. We had our share of jhagde, but they never lasted long because our friendship was stronger. Group studies that turned into gossip, last-minute assignments, proxy attendance, and exam stress with last-night preparation—somehow we managed everything together. From fun moments and celebrations to helping each other in tough times, every memory became special. And now, as this journey ends, it’s hard to accept that these moments will never come back. We came as strangers in 2024, but we leave in 2026 as a family, carrying a lifetime of memories in our hearts.LOVE YOU GUYS (CR GAY) 💔✨";
+        const fullText = "It all started with awkward first meetings, unknown faces and names, but slowly those strangers became friends and then turned into family. From simple “hi” to calling each other bhai and yaar, we never realized when the bond became so strong. The endless masti, backchodi, canteen talks, and laughter in classrooms made every day unforgettable. We had our share of jhagde, but they never lasted long because our friendship was stronger. Group studies that turned into gossip, last-minute assignments, proxy attendance, and exam stress with last-night preparation—somehow we managed everything together. From fun moments and celebrations to helping each other in tough times, every memory became special. And now, as this journey ends, it’s hard to accept that these moments will never come back. We came as strangers in 2024, but we leave in 2026 as a family, carrying a lifetime of memories in our hearts. 💔✨";
 
         const container = document.getElementById('word-container');
         const words = fullText.split(" ");
@@ -107,17 +99,25 @@
                 span.classList.add('word');
                 span.innerText = word;
                 container.appendChild(span);
-
-                // This triggers each word every 150ms for a "typing" effect
-                setTimeout(() => {
-                    span.classList.add('visible');
-                }, index * 150); 
+                setTimeout(() => { span.classList.add('visible'); }, index * 160); 
             });
         }
 
-        window.onload = animateWords;
+        window.onload = function() {
+            animateWords();
+            // Check if user already posted
+            if (localStorage.getItem("hasPosted") === "true") {
+                document.getElementById("form-container").style.display = "none";
+                document.getElementById("already-posted").style.display = "block";
+            }
+        };
 
-        // Background Hearts
+        // Set the lock when the form is submitted
+        document.getElementById("memoryForm").onsubmit = function() {
+            localStorage.setItem("hasPosted", "true");
+        };
+
+        // Heart animation
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('floating-heart');

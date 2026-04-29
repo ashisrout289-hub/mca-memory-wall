@@ -3,7 +3,7 @@ import os
 
 app = Flask(__name__)
 
-# Folder for user-uploaded photos
+# Ensure the upload folder exists
 UPLOAD_FOLDER = 'static/uploads'
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
@@ -18,21 +18,23 @@ def submit():
     about = request.form.get('about')
     photo = request.files.get('photo')
 
-    photo_name = "No Photo"
     if photo:
         photo_name = photo.filename
         photo.save(os.path.join(UPLOAD_FOLDER, photo_name))
+    else:
+        return "Error: Photo is required!", 400
 
+    # Save the text data to a file
     entry = f"Name: {name} | Message: {about} | Photo: {photo_name}\n"
-    with open('responses.txt', 'a') as f:
+    with open('responses.txt', 'a', encoding='utf-8') as f:
         f.write(entry)
 
-    return "<h1>Memory Saved! ❤️</h1><a href='/'>Go Back</a>"
+    return "<h1>Memory Saved! ❤️</h1><p>Thank you for being part of the family.</p><a href='/'>Go Back</a>"
 
 @app.route('/view-memories-secret')
 def admin_view():
     if os.path.exists('responses.txt'):
-        with open('responses.txt', 'r') as f:
+        with open('responses.txt', 'r', encoding='utf-8') as f:
             data = f.read()
     else:
         data = "No messages yet."
