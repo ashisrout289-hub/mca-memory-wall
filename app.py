@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for
 import os
 
 app = Flask(__name__)
-# ... rest of the code remains the same
 
 # Folder for user-uploaded photos
 UPLOAD_FOLDER = 'static/uploads'
@@ -31,7 +30,6 @@ def submit():
 
     return "<h1>Memory Saved! ❤️</h1><a href='/'>Go Back</a>"
 
-# SECRET ADMIN PANEL
 @app.route('/my-secret-admin-panel')
 def admin_view():
     try:
